@@ -10,7 +10,6 @@ public class Tweener : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -18,13 +17,15 @@ public class Tweener : MonoBehaviour
     {
         if (activeTween != null)
         {
-            if (Vector3.Distance(activeTween.Target.position, activeTween.EndPos) > 0.1f) //if activeTween.Target is futher than 0.1f units away from the activeTween.EndPos, 
+            float distance = Vector3.Distance(activeTween.Target.position, activeTween.EndPos);
+            if (distance > 0.1f) //if activeTween.Target is futher than 0.1f units away from the activeTween.EndPos,
             {
                 //lerp towards the EndPos
-                Debug.Log("Lerping");
-                Vector3.Lerp(activeTween.Target.position, activeTween.EndPos, 0.5f /*figure out the value for interpolating between start and end*/);
+                //Debug.Log("Lerping");
+                activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, ((Time.time - activeTween.StartTime)/activeTween.Duration)); /*figure out the value for interpolating between start and end*/
+
             }
-            else if ( Vector3.Distance(activeTween.Target.position, activeTween.EndPos) <= 0.1f)
+            else if ( distance <= 0.1f)
             {
                 //set activeTween.Target.position = activeTween.EndPos
                 activeTween.Target.position = activeTween.EndPos;

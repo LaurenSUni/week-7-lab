@@ -24,7 +24,7 @@ public class ProgressEvaluator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        evalMethods = new Action[] { () => Z40Band(), () => Pass50Band(), () => Pass60Band(), 
+        evalMethods = new Action[] { () => Z40Band(), () => Pass50Band(), () => Pass60Band(),
             () => Credit70Band(), () => Distinction80Band(), () => HighDist90Band(), () => HighDist100Band() };
         loadedBand = EvalReader();
 
@@ -70,7 +70,7 @@ public class ProgressEvaluator : MonoBehaviour
         if (!tempGO.GetComponent<Renderer>().material.color.Equals(new Color32(255, 255, 0, 255)))
             throw new EvalFailedException("Box is not the correct color");
 
-        if (!VectApprox(Camera.main.transform.position, new Vector3(0,3,-4)) 
+        if (!VectApprox(Camera.main.transform.position, new Vector3(0,3,-4))
             || !VectApprox(Camera.main.transform.rotation.eulerAngles, new Vector3(45,0,0)))
             throw new EvalFailedException("The camera is either in the wrong position or has the wrong rotation");
 
@@ -94,7 +94,7 @@ public class ProgressEvaluator : MonoBehaviour
             throw new EvalFailedException("You skipped the first instruction in 50% band");
         if (!RegexCheck("Tweener.cs", "private\\s+Tween\\s+activeTween"))
             throw new EvalFailedException("No private variable named activeTween found");
-        
+
         PropertyInfo[] propInfo = Type.GetType("Tween").GetProperties();
         if (propInfo.Length == 0)
             throw new EvalFailedException("There are no PROPERTIES in the Tween class. " +
@@ -216,7 +216,7 @@ public class ProgressEvaluator : MonoBehaviour
 
     private IEnumerator HD90Coroutine()
     {
-        Transform box = GameObject.Find("Box").transform;       
+        Transform box = GameObject.Find("Box").transform;
 
         while (!Input.GetKeyDown(KeyCode.A))
             yield return null;
@@ -224,8 +224,8 @@ public class ProgressEvaluator : MonoBehaviour
         yield return new WaitForSeconds(0.75f);
         if (box.position.x < -0.3f || box.position.x > -0.2f)
             throw new EvalFailedException("The Box is not in the correct position half-way through the cubic interpolation after pressing A");
-        
-        yield return new WaitForSeconds(0.45f);        
+
+        yield return new WaitForSeconds(0.45f);
         if (box.position.x < -1.2f || box.position.x > -0.85f)
             throw new EvalFailedException("The Box is not in the correct position at 4/5ths of the way through the cubic interpolation after pressing A");
 
@@ -237,7 +237,7 @@ public class ProgressEvaluator : MonoBehaviour
         while (!Input.GetKeyDown(KeyCode.D))
             yield return null;
 
-        yield return new WaitForSeconds(0.75f);        
+        yield return new WaitForSeconds(0.75f);
         if (box.position.x < -1.7f || box.position.x > -1.3f)
             throw new EvalFailedException("The Box is not in the correct position half-way through the cubic interpolation after pressing A");
 
