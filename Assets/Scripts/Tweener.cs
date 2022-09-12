@@ -6,6 +6,7 @@ public class Tweener : MonoBehaviour
 {
 
     private Tween activeTween;
+    float t;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +23,8 @@ public class Tweener : MonoBehaviour
             {
                 //lerp towards the EndPos
                 //Debug.Log("Lerping");
-                activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, ((Time.time - activeTween.StartTime)/activeTween.Duration)); /*figure out the value for interpolating between start and end*/
+                t = ((Time.time - activeTween.StartTime)/activeTween.Duration);
+                activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, t*t*t); /*figure out the value for interpolating between start and end*/
 
             }
             else if ( distance <= 0.1f)
