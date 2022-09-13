@@ -5,7 +5,9 @@ using UnityEngine;
 public class Tweener : MonoBehaviour
 {
 
-    private Tween activeTween;
+    //private Tween activeTween;
+    private List<Tween> activeTweens = new List<Tween>();
+
     float t;
 
     // Start is called before the first frame update
@@ -16,31 +18,44 @@ public class Tweener : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (activeTween != null)
+        for (int i=0; i < activeTweens.Count; i++)
         {
-            float distance = Vector3.Distance(activeTween.Target.position, activeTween.EndPos);
+            float distance = Vector3.Distance(activeTweens[i].Target.position, activeTweens[i].EndPos);
             if (distance > 0.1f) //if activeTween.Target is futher than 0.1f units away from the activeTween.EndPos,
             {
                 //lerp towards the EndPos
                 //Debug.Log("Lerping");
-                t = ((Time.time - activeTween.StartTime)/activeTween.Duration);
-                activeTween.Target.position = Vector3.Lerp(activeTween.StartPos, activeTween.EndPos, t*t*t); /*figure out the value for interpolating between start and end*/
+                t = ((Time.time - activeTweens[i].StartTime)/activeTweens[i].Duration);
+                activeTweens[i].Target.position = Vector3.Lerp(activeTweens[i].StartPos, activeTweens[i].EndPos, t*t*t); /*figure out the value for interpolating between start and end*/
 
             }
             else if ( distance <= 0.1f)
             {
                 //set activeTween.Target.position = activeTween.EndPos
-                activeTween.Target.position = activeTween.EndPos;
+                activeTweens[i].Target.position = activeTweens[i].EndPos;
                 //and null the activeTween variable.
-                activeTween = null;
+                //activeTween = null;
+                activeTweens.RemoveAt(i);
             }
         }
     }
 
-    public void AddTween(Transform targetObject, Vector3 startPos, Vector3 endPos, float duration)
-    {
-        if ((activeTween) == null){
-            activeTween = new Tween(targetObject, startPos, endPos, Time.time, duration);
+    public bool TweenExists(Transform target){
+      //if activeTweens list contains target, return true, otherwise return false
+      for (int i=0; i < activeTweens.Count; i++){
+        if (activeTweens[i].Target == target){
+          return true;
         }
+      }
+      return false;
+    }
+
+    public bool AddTween(Transform targetObject, Vector3 startPos, Vector3 endPos, float duration)
+    {
+        if (TweenExists(targetObject) == false){
+            activeTweens.Add(new Tween(targetObject, startPos, endPos, Time.time, duration));
+            return true;
+        }
+        return false;
     }
 }
